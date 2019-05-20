@@ -18,5 +18,4 @@ class AccessTokenCreate(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         user = self.request.user
-        print(self.request.data["public_token"])
         serializer.save(user=user)
