@@ -146,10 +146,16 @@ REST_FRAMEWORK = {
     )
 }
 
-
-CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+REDIS_HOST = os.getenv('REDIS_HOST', 'localhost')
+CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':6379'
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
+
+PLAID_CLIENT_ID = os.getenv('PLAID_CLIENT_ID')
+PLAID_SECRET = os.getenv('PLAID_SECRET')
+PLAID_PUBLIC_KEY = os.getenv('PLAID_PUBLIC_KEY')
+PLAID_ENV = os.getenv('PLAID_ENV', 'sandbox')
+PLAID_PRODUCTS = os.getenv('PLAID_PRODUCTS', 'transactions')

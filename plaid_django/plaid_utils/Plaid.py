@@ -1,18 +1,15 @@
 import plaid
 import os
 from django.core.exceptions import SuspiciousOperation
+from django.conf import settings
 
-PLAID_CLIENT_ID = os.getenv('PLAID_CLIENT_ID')
-PLAID_SECRET = os.getenv('PLAID_SECRET')
-PLAID_PUBLIC_KEY = os.getenv('PLAID_PUBLIC_KEY')
-PLAID_ENV = os.getenv('PLAID_ENV', 'sandbox')
-PLAID_PRODUCTS = os.getenv('PLAID_PRODUCTS', 'transactions')
 
-PLAID_CLIENT_ID = "5cde2115736cca00137ef568"
-PLAID_SECRET= "4aeb4e3abd4f2a523be49747589f75"
-PLAID_PUBLIC_KEY= "2dc2351ad61dbf52196b0b94aaf3ed"
-PLAID_PRODUCTS= "transactions  "
-PLAID_ENV= "sandbox"
+PLAID_CLIENT_ID = settings.PLAID_CLIENT_ID
+PLAID_SECRET = settings.PLAID_SECRET
+PLAID_PUBLIC_KEY = settings.PLAID_PUBLIC_KEY
+PLAID_PRODUCTS = settings.PLAID_PRODUCTS
+PLAID_ENV = settings.PLAID_ENV
+
 Client = plaid.Client(client_id = PLAID_CLIENT_ID, secret=PLAID_SECRET, public_key=PLAID_PUBLIC_KEY, environment=PLAID_ENV, api_version='2018-05-22')
 
 class Plaid():

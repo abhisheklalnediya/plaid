@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from Item.views import AccessTokenCreate
+from Item.views import AccessTokenCreate, handleWebhook
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('rest_framework.urls')),
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     path('public_key/', AccessTokenCreate.as_view(), name='Create_AccessToken'),
+    path('wh/', handleWebhook, name='Handel_webhook'),
 ]

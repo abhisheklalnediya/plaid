@@ -1,8 +1,10 @@
-
 from Item.models import AccessToken
-from rest_framework import generics
+from Item.models import AccessToken
 from Item.serializers import AccessTokenSerializer
-from Item.models import AccessToken
+from rest_framework import generics
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
 
 class AccessTokenCreate(generics.CreateAPIView):
     # """
@@ -19,3 +21,12 @@ class AccessTokenCreate(generics.CreateAPIView):
     def perform_create(self, serializer):
         user = self.request.user
         serializer.save(user=user)
+
+
+@api_view(['GET', 'POST'])
+def handleWebhook(request):
+    if request.method == 'POST':
+        print(request.data)
+        return Response({"message": "Got some data!", "data": request.data})
+    print(request.GET)
+    return Response({"message": "Hello, Howdy!"})

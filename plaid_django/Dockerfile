@@ -12,4 +12,10 @@ COPY . /code/
 RUN ln -s /code/nginx.conf /etc/nginx/sites-enabled/
 RUN nginx -t
 RUN service nginx restart
-RUN supervisord -n -c supervisor.conf
+RUN echo $PATH
+RUN echo $PATH
+RUN python --version
+RUN alias python=python3
+RUN python --version
+RUN which python
+CMD python manage.py runserver
