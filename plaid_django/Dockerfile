@@ -18,4 +18,4 @@ RUN python --version
 RUN alias python=python3
 RUN python --version
 RUN which python
-CMD python manage.py runserver
+CMD supervisord -n -c supervisor.conf
