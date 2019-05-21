@@ -15,12 +15,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from oauth2_provider.views import TokenView, RevokeTokenView 
 from Item.views import AccessTokenCreate, handleWebhook
+from plaid_django.views import CreateUser
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('rest_framework.urls')),
+    
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    
+    path('signup/', CreateUser.as_view(), name='Create_User'),
+    path('login/', TokenView.as_view(), name='User_Login'),
+    path('logout/', RevokeTokenView.as_view(), name='User_Logout'),
+
     path('public_key/', AccessTokenCreate.as_view(), name='Create_AccessToken'),
+    
     path('wh/', handleWebhook, name='Handel_webhook'),
+
 ]
