@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from oauth2_provider.views import TokenView, RevokeTokenView 
 from Item.views import AccessTokenCreate, handleWebhook
-from plaid_django.views import CreateUser
+from plaid_django.views import CreateUser, Login, Logout
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,8 +25,8 @@ urlpatterns = [
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     
     path('signup/', CreateUser.as_view(), name='Create_User'),
-    path('login/', TokenView.as_view(), name='User_Login'),
-    path('logout/', RevokeTokenView.as_view(), name='User_Logout'),
+    path('login/', Login, name='User_Login'),
+    path('logout/', Logout, name='User_Logout'),
 
     path('public_key/', AccessTokenCreate.as_view(), name='Create_AccessToken'),
     

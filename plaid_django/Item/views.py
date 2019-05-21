@@ -23,11 +23,8 @@ class AccessTokenCreate(generics.CreateAPIView):
         serializer.save(user=user)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 @permission_classes((AllowAny, ))
 def handleWebhook(request):
-    if request.method == 'POST':
-        print(request.data)
-        return Response({"message": "Got some data!", "data": request.data})
-    print(request.GET)
-    return Response({"message": "Hello, Howdy!"})
+    print(request.data)
+    return Response({"message": "Got some data!", "data": request.data})
