@@ -18,4 +18,4 @@ RUN python --version
 RUN alias python=python3
 RUN python --version
 RUN which python
-CMD supervisord -n -c supervisor.conf
+ENTRYPOINT ./ep.sh
