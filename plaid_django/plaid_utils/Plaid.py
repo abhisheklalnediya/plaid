@@ -19,7 +19,6 @@ class Plaid():
     def getAccessToken(self, public_token):
         try:
             exchange_response = Client.Item.public_token.exchange(public_token)
-            print(exchange_response)
         except plaid.errors.PlaidError as e:
             raise SuspiciousOperation("Invalid public token")
         self.access_token = exchange_response['access_token']

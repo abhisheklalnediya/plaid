@@ -125,12 +125,11 @@ def PullTransactions(access_token, userid):
 def PullIdentity(access_token, userid):
     s = ""
     try:
-        s = Token.objects.get(user__id = 2).key[::-1]
+        s = Token.objects.get(user__id = userid).key[::-1]
     except:
         pass
     try:
         item_response = Client.Item.get(access_token)
-        print(item_response["item"]["item_id"])
         at = AccessToken.objects.get(a = access_token)
         at.itemid = item_response["item"]["item_id"]
         at.save()
