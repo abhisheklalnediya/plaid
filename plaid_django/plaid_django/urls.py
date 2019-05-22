@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.views.generic import RedirectView
 from django.urls import path, include
 from oauth2_provider.views import TokenView, RevokeTokenView 
-from Item.views import AccessTokenCreate, handleWebhook, TransactionList
+from Item.views import AccessTokenCreate, handleWebhook, TransactionList, fireWebhook
 from plaid_django.views import CreateUser, Login, Logout
 
 urlpatterns = [
@@ -34,5 +34,6 @@ urlpatterns = [
     path('transactions/', TransactionList.as_view(), name='Transaction_list'),
     
     path('wh/', handleWebhook, name='Handel_webhook'),
+    path('firewh/', fireWebhook, name='Fire_webhook'),
 
 ]

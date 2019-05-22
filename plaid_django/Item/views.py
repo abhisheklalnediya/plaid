@@ -4,6 +4,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, permission_classes
+from plaid_utils.Plaid import Client
 
 class AccessTokenCreate(generics.CreateAPIView):
     # """
@@ -51,3 +52,12 @@ def handleWebhook(request):
             print(Exception)
             pass
     return Response({"message": "Got some data!", "data": request.data})
+
+@api_view(['POST'])
+def fireWebhook(request):
+    AT = AccessToken.objects.filter(user = request.user)
+    fire_respose = []
+    for at in AT:
+        fr = Client.Sandbox.item.fire_webhook(at.a, 'DEFAULT_UPDATE')
+        fr.append(at)
+    return Response(fire_respose)
