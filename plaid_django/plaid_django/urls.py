@@ -30,7 +30,7 @@ urlpatterns = [
     path('login/', Login, name='User_Login'),
     path('logout/', Logout, name='User_Logout'),
 
-    path('public_key/', AccessTokenCreate.as_view(), name='Create_AccessToken'),
+    path('public_token/', AccessTokenCreate.as_view(), name='Create_AccessToken'),
     path('transactions/', TransactionList.as_view(), name='Transaction_list'),
     
     path('wh/', handleWebhook, name='Handel_webhook'),

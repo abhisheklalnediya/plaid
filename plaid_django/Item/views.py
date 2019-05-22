@@ -44,13 +44,13 @@ def handleWebhook(request):
     hc.save()
     if request.data.webhook_type == "TRANSACTIONS":
         try:
-            print(request.data.item_id)
             item = AccessToken.objects.get(itemid = request.data.item_id)
-            print("Pulling Transaction")
+            hc.actionsTaken.append("PULLING TRANSACTION")
+            hc.save()
             PullTransactions(item.a, item.user.id)
         except:
-            print(Exception)
-            pass
+            hc.actionsTaken.append("EXCEPTION HAPPENED")
+            hc.save()
     return Response({"message": "Got some data!", "data": request.data})
 
 @api_view(['POST'])
