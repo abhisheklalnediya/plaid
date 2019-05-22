@@ -46,7 +46,6 @@ def handleWebhook(request):
     #     Actions taken are logged in the hook calls modal
     # """
     hc = HookCall(body=request.data)
-    hc.save()
     if request.data["webhook_type"] == "TRANSACTIONS":
         try:
             item_id = request.data["item_id"]
@@ -57,6 +56,9 @@ def handleWebhook(request):
         except:
             hc.actionsTaken.append("EXCEPTION HAPPENED")
             hc.save()
+    else:
+        hc.actionsTaken.append("SKIPPED")
+        hc.save()
     return Response({"message": "Got some data!", "data": request.data})
 
 @api_view(['POST'])
