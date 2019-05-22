@@ -132,6 +132,9 @@ def PullIdentity(access_token, userid):
         print(item_response["item"]["item_id"])
         at = AccessToken.objects.get(a = access_token)
         at.itemid = item_response["item"]["item_id"]
+        # subscribe to webhook
+        Client.Item.webhook.update(access_token, settings.WEBHOOKEP)
+
         # pull transactions once item details are there
         # PullTransactions.delay(access_token, userid)
     except plaid.errors.PlaidError as e:
