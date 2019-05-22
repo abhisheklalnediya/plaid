@@ -1,4 +1,43 @@
-<button id="link-button">Link Account</button>
+<style>
+  button{
+    background-color: #0a85ea;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1);
+    color: #FFF;
+    height: 40px;
+    width: 200px;
+    font-family: sans-serif;
+    font-size: 16px;
+    border: navajowhite;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  span{
+    color: #999
+  }
+  span, p{
+    margin: 25px 0px;
+    display: block;
+    font-family: monospace;
+  }
+
+</style>
+<body>
+  <button id="link-button">Link Account</button>
+  <br>
+  <span id="publickey"></span>
+  <p>
+    <ol>
+      <li>Get Public Key</li>
+      <li>Signup</li>
+      <li>Link Public Key</li>
+      <li>Trigger Webhook</li>
+      <li>Fetch Transactions</li>
+    </ol>
+  </p>
+</body>
+
+
 <script 
 src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
 <script 
@@ -32,6 +71,8 @@ src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
       // user selected and the account ID or IDs, if the
       // Select Account view is enabled.
       console.log(public_token)
+
+      $("#publickey").text(public_token)
     //   $.post('http://127.0.0.1:8000/a/gott_public_token', {
     //     public_token: public_token,
     //   });
@@ -62,5 +103,6 @@ src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
   $('#link-button').on('click', function(e) {
     handler.open();
   });
+
 })(jQuery);
 </script>

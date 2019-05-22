@@ -16,8 +16,8 @@ import plaid
 
 class AccessToken(models.Model):
     a = models.CharField(max_length=80)
+    itemid = models.CharField(max_length=80, null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE )
-    
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
@@ -63,10 +63,14 @@ class Transaction(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
+class HookCalls(models.Model):
+    body = JSONField()
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
 
 @receiver(post_save, sender=AccessToken, dispatch_uid="Start Pulling Details")
 def PullDetails(sender, instance, **kwargs):
-    PullTransactions.delay(instance.a, instance.user.id)
+    PullIdentity.delay(instance.a, instance.user.id)
 
 
 def insertAccounts(accounts_data, userid):
@@ -117,6 +121,19 @@ def PullTransactions(access_token, userid):
         transactions_response = Client.Transactions.get(access_token, start_date, end_date)
         insertAccounts(transactions_response["accounts"], userid)
         insertTransactions(transactions_response["transactions"], userid)
+    except plaid.errors.PlaidError as e:
+        raise SuspiciousOperation("Error")
+    return None
+
+@task(name="pullIdentity")
+def PullIdentity(access_token, userid):
+    try:
+        item_response = Client.Item.get(access_token)
+        print(item_response["item"]["item_id"])
+        at = AccessToken.objects.get(a = access_token)
+        at.itemid = item_response["item"]["item_id"]
+        # pull transactions once item details are there
+        # PullTransactions.delay(access_token, userid)
     except plaid.errors.PlaidError as e:
         raise SuspiciousOperation("Error")
     return None

@@ -1,4 +1,4 @@
-from Item.models import AccessToken
+from Item.models import AccessToken, Transaction
 from rest_framework import serializers
 
 class AccessTokenSerializer(serializers.Serializer):
@@ -9,3 +9,7 @@ class AccessTokenSerializer(serializers.Serializer):
         A.save()
         return validated_data
 
+class TransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields = ('date', 'amount', 'category')

@@ -14,13 +14,25 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.views.generic import RedirectView
 from django.urls import path, include
-from Item.views import AccessTokenCreate, handleWebhook
+from oauth2_provider.views import TokenView, RevokeTokenView 
+from Item.views import AccessTokenCreate, handleWebhook, TransactionList
+from plaid_django.views import CreateUser, Login, Logout
 
 urlpatterns = [
+    path('',  RedirectView.as_view(url='/static/')),
     path('admin/', admin.site.urls),
-    path('api/', include('rest_framework.urls')),
+    
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    
+    path('signup/', CreateUser.as_view(), name='Create_User'),
+    path('login/', Login, name='User_Login'),
+    path('logout/', Logout, name='User_Logout'),
+
     path('public_key/', AccessTokenCreate.as_view(), name='Create_AccessToken'),
+    path('transactions/', TransactionList.as_view(), name='Transaction_list'),
+    
     path('wh/', handleWebhook, name='Handel_webhook'),
+
 ]
