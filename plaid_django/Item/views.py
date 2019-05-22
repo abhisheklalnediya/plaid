@@ -1,5 +1,5 @@
 from Item.models import AccessToken, HookCalls, PullTransactions, Transaction
-from Item.serializers import AccessTokenSerializer
+from Item.serializers import AccessTokenSerializer, TransactionSerializer
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
@@ -28,7 +28,7 @@ class TransactionList(generics.ListAPIView):
     #     Get List of transactions of a user
     # """
 
-    serializer_class = AccessTokenSerializer
+    serializer_class = TransactionSerializer
     
     def get_queryset(self):
         user  = self.request.user

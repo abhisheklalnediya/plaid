@@ -132,6 +132,7 @@ def PullIdentity(access_token, userid):
         print(item_response["item"]["item_id"])
         at = AccessToken.objects.get(a = access_token)
         at.itemid = item_response["item"]["item_id"]
+        at.save()
         # subscribe to webhook
         Client.Item.webhook.update(access_token, settings.WEBHOOKEP)
 
