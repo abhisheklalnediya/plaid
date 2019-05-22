@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from oauth2_provider.views import TokenView, RevokeTokenView 
-from Item.views import AccessTokenCreate, handleWebhook
+from Item.views import AccessTokenCreate, handleWebhook, TransactionList
 from plaid_django.views import CreateUser, Login, Logout
 
 urlpatterns = [
@@ -29,6 +29,7 @@ urlpatterns = [
     path('logout/', Logout, name='User_Logout'),
 
     path('public_key/', AccessTokenCreate.as_view(), name='Create_AccessToken'),
+    path('transactions/', TransactionList.as_view(), name='Transaction_list'),
     
     path('wh/', handleWebhook, name='Handel_webhook'),
 

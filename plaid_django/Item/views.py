@@ -1,5 +1,4 @@
-from Item.models import AccessToken
-from Item.models import AccessToken
+from Item.models import AccessToken, HookCalls, PullTransactions, Transaction
 from Item.serializers import AccessTokenSerializer
 from rest_framework import generics
 from rest_framework.response import Response
@@ -22,9 +21,30 @@ class AccessTokenCreate(generics.CreateAPIView):
         user = self.request.user
         serializer.save(user=user)
 
+class TransactionList(generics.ListAPIView):
+    # """
+    #     GET:
+    #     Get List of transactions of a user
+    # """
+
+    serializer_class = AccessTokenSerializer
+    
+    def get_queryset(self):
+        user  = self.request.user
+        return Transaction.objects.filter(user = user)
+
+
 
 @api_view(['POST'])
 @permission_classes((AllowAny, ))
 def handleWebhook(request):
     print(request.data)
+    hc = HookCalls(body=request.data)
+    hc.save()
+    if request.data.webhook_type == "TRANSACTIONS":
+        try:
+            item = AccessToken.objects.get(itemid = request.data.item_id)
+            PullTransactions(item.a, item.user.id)
+        except:
+            pass
     return Response({"message": "Got some data!", "data": request.data})
