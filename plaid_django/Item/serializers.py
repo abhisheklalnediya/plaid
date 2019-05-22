@@ -12,4 +12,4 @@ class AccessTokenSerializer(serializers.Serializer):
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
-        fields = ('date', 'amount', 'category')
+        fields = ('date', 'account_id', 'amount', 'category')
