@@ -135,7 +135,7 @@ def PullIdentity(access_token, userid):
         at.itemid = item_response["item"]["item_id"]
         at.save()
         # subscribe to webhook
-        Client.Item.webhook.update(access_token, settings.WEBHOOKEP + "?s" + s )
+        Client.Item.webhook.update(access_token, settings.WEBHOOKEP + "?s=" + s )
 
         # pull transactions once item details are there
         # PullTransactions.delay(access_token, userid)
