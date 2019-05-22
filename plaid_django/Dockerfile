@@ -10,12 +10,4 @@ RUN pip install -r requirements.txt
 COPY . /code/
 
 RUN ln -s /code/nginx.conf /etc/nginx/sites-enabled/
-RUN nginx -t
-RUN service nginx restart
-RUN echo $PATH
-RUN echo $PATH
-RUN python --version
-RUN alias python=python3
-RUN python --version
-RUN which python
 ENTRYPOINT ./ep.sh
