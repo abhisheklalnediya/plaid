@@ -42,10 +42,11 @@ def handleWebhook(request):
     print(request.data)
     hc = HookCalls(body=request.data)
     hc.save()
-    if request.data.webhook_type == "TRANSACTIONS":
+    if request.data["webhook_type"] == "TRANSACTIONS":
         try:
-            print(request.data.item_id)
-            item = AccessToken.objects.get(itemid = request.data.item_id)
+            item_id = request.data["item_id"]
+            print(item_id)
+            item = AccessToken.objects.get(itemid = item_id)
             print("Pulling Transaction")
             PullTransactions(item.a, item.user.id)
         except:
