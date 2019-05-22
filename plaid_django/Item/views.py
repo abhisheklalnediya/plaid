@@ -59,5 +59,5 @@ def fireWebhook(request):
     fire_respose = []
     for at in AT:
         fr = Client.Sandbox.item.fire_webhook(at.a, 'DEFAULT_UPDATE')
-        fr.append(at)
+        fire_respose.append(at)
     return Response(fire_respose)
