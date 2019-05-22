@@ -46,6 +46,8 @@ def handleWebhook(request):
     #     Actions taken are logged in the hook calls modal
     # """
     hc = HookCall(body=request.data)
+    hc.item_id = request.data["item_id"]
+    hc.webhook_type = request.data["webhook_type"]
     hc.actionsTaken = []
     if request.data["webhook_type"] == "TRANSACTIONS":
         try:

@@ -5,6 +5,8 @@ import uuid
 
 class HookCall(models.Model):
     body = JSONField()
+    item_id = models.CharField(max_length=80, null=True, blank=True)
+    webhook_type = models.CharField(max_length=80, null=True, blank=True)
     actionsTaken = ArrayField(models.CharField(max_length=80))
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
