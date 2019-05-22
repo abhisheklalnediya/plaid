@@ -25,7 +25,7 @@ SECRET_KEY = '3ycc)z0%jg0)a7i4ig3b_zseiggqu#c-c8lw2tx*v^n#-r!f67'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["35.238.128.219"]
+ALLOWED_HOSTS = ["35.238.128.219", "localhost"]
 
 
 # Application definition
@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'oauth2_provider',
     'corsheaders',
 
-    'Item'
+    'Item',
+    'Request'
 ]
 
 MIDDLEWARE = [
@@ -58,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'Request.middleware.LogMiddleware'
 ]
 
 ROOT_URLCONF = 'plaid_django.urls'

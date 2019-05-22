@@ -1,4 +1,5 @@
-from Item.models import AccessToken, HookCalls, PullTransactions, Transaction
+from Item.models import AccessToken, PullTransactions, Transaction
+from Request.models import HookCall
 from Item.serializers import AccessTokenSerializer, TransactionSerializer
 from rest_framework import generics
 from rest_framework.response import Response
@@ -44,7 +45,7 @@ def handleWebhook(request):
     #     Webhook from plaid. The hook calls are logged in Hookcall modal, Then actions are taken.
     #     Actions taken are logged in the hook calls modal
     # """
-    hc = HookCalls(body=request.data)
+    hc = HookCall(body=request.data)
     hc.save()
     if request.data["webhook_type"] == "TRANSACTIONS":
         try:

@@ -7,6 +7,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from plaid_utils.Plaid import Client, Plaid
+from rest_framework.authtoken.models import Token
 
 import datetime
 import plaid
@@ -60,12 +61,6 @@ class Transaction(models.Model):
     unofficial_currency_code  = models.CharField(max_length=80, null=True, blank=True)
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE )
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
-
-class HookCalls(models.Model):
-    body = JSONField()
-    actionsTaken = ArrayField(models.CharField(max_length=80))
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
@@ -128,6 +123,11 @@ def PullTransactions(access_token, userid):
 
 @task(name="pullIdentity")
 def PullIdentity(access_token, userid):
+    s = ""
+    try:
+        s = Token.objects.get(user__id = 2).key[::-1]
+    except:
+        pass
     try:
         item_response = Client.Item.get(access_token)
         print(item_response["item"]["item_id"])
@@ -135,7 +135,7 @@ def PullIdentity(access_token, userid):
         at.itemid = item_response["item"]["item_id"]
         at.save()
         # subscribe to webhook
-        Client.Item.webhook.update(access_token, settings.WEBHOOKEP)
+        Client.Item.webhook.update(access_token, settings.WEBHOOKEP + "?s" + s )
 
         # pull transactions once item details are there
         # PullTransactions.delay(access_token, userid)
