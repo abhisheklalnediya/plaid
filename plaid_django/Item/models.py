@@ -66,6 +66,7 @@ class Transaction(models.Model):
 
 @receiver(post_save, sender=AccessToken, dispatch_uid="Start Pulling Details")
 def PullDetails(sender, instance, **kwargs):
+    print(instance.user, instance.user.id)
     PullIdentity.delay(instance.a, instance.user.id)
 
 
@@ -125,7 +126,9 @@ def PullTransactions(access_token, userid):
 def PullIdentity(access_token, userid):
     s = ""
     try:
+        print(userid)
         s = Token.objects.get(user__id = userid).key[::-1]
+        print(s)
     except:
         pass
     try:
