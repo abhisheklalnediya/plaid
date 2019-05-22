@@ -15,8 +15,8 @@ import plaid
 # Create your models here.
 
 class AccessToken(models.Model):
-    a = models.CharField(max_length=80)
     itemid = models.CharField(max_length=80, null=True, blank=True)
+    a = models.CharField(max_length=80, unique=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE )
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
