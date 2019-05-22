@@ -1,5 +1,5 @@
 from Item.models import AccessToken, HookCalls, PullTransactions, Transaction
-from Item.serializers import AccessTokenSerializer
+from Item.serializers import AccessTokenSerializer, TransactionSerializer
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
@@ -13,7 +13,7 @@ class AccessTokenCreate(generics.CreateAPIView):
     # """
 
     serializer_class = AccessTokenSerializer
-    
+
     def get_queryset(self):
         user  = self.request.user
         return AccessToken.objects.all()
@@ -28,8 +28,8 @@ class TransactionList(generics.ListAPIView):
     #     Get List of transactions of a user
     # """
 
-    serializer_class = AccessTokenSerializer
-    
+    serializer_class = TransactionSerializer
+
     def get_queryset(self):
         user  = self.request.user
         return Transaction.objects.filter(user = user)
@@ -39,12 +39,17 @@ class TransactionList(generics.ListAPIView):
 @api_view(['POST'])
 @permission_classes((AllowAny, ))
 def handleWebhook(request):
-    print(request.data)
+    # """
+    #     POST:
+    #     Webhook from plaid. The hook calls are logged in Hookcall modal, Then actions are taken.
+    #     Actions taken are logged in the hook calls modal
+    # """
     hc = HookCalls(body=request.data)
     hc.save()
-    if request.data.webhook_type == "TRANSACTIONS":
+    if request.data["webhook_type"] == "TRANSACTIONS":
         try:
-            item = AccessToken.objects.get(itemid = request.data.item_id)
+            item_id = request.data["item_id"]
+            item = AccessToken.objects.get(itemid = item_id)
             hc.actionsTaken.append("PULLING TRANSACTION")
             hc.save()
             PullTransactions(item.a, item.user.id)
@@ -55,6 +60,10 @@ def handleWebhook(request):
 
 @api_view(['POST'])
 def fireWebhook(request):
+    # """
+    #     POST:
+    #     A Utility endpoint to trigger all the hooks of a user
+    # """
     AT = AccessToken.objects.filter(user = request.user)
     fire_respose = []
     for at in AT:
