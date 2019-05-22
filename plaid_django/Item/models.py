@@ -126,9 +126,7 @@ def PullTransactions(access_token, userid):
 def PullIdentity(access_token, userid):
     s = ""
     try:
-        print(userid)
         s = Token.objects.get(user__id = userid).key[::-1]
-        print(s)
     except:
         pass
     try:
